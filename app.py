@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from huggingface_hub import InferenceClient
 import os
+import uvicorn
 
 app = FastAPI()
 
@@ -24,7 +25,7 @@ html_content = """
 </head>
 <body>
     <h1>🚀 Universal AI Code Debugger</h1>
-    <p>Paste any code (Python, Java, SQL, etc.) below to fix it instantly!</p>
+    <p>Paste any code below to fix it instantly!</p>
     <textarea id="code-input" placeholder="Paste your buggy code here..."></textarea><br>
     <button onclick="debugCode()">Debug Now</button>
     <div id="result">Waiting for code...</div>
@@ -58,37 +59,36 @@ html_content = """
 async def get_home():
     return html_content
 
-# --- META SCALER COMPLIANCE ROUTES START ---
-
 @app.post("/reset")
 async def reset_env():
-    """Endpoint for Meta Scaler automated reset check"""
     return {"status": "success", "message": "Environment reset successfully"}
 
 @app.post("/validate")
 async def validate_env(request: Request):
-    """Endpoint for Meta Scaler automated validation check"""
     return {"status": "success", "message": "Validation passed"}
-
-# --- META SCALER COMPLIANCE ROUTES END ---
 
 @app.post("/")
 async def post_debug(request: Request):
     try:
         data = await request.json()
         user_code = data.get("user_code", "")
-        
         messages = [
             {"role": "system", "content": "You are an expert programmer. Debug and fix the following code."},
             {"role": "user", "content": f"Debug this code:\n{user_code}"}
         ]
-        
         response = client.chat_completion(
             model="meta-llama/Meta-Llama-3-8B-Instruct",
             messages=messages,
             max_tokens=1000
         )
-        
         return {"debug_report": response.choices[0].message.content}
     except Exception as e:
         return {"message": f"Server Error: {str(e)}"}
+
+# --- ADDED FOR SCALER VALIDATION ---
+def main():
+    """Entry point required by Scaler bot"""
+    uvicorn.run(app, host="0.0.0.0", port=7860)
+
+if __name__ == "__main__":
+    main()
