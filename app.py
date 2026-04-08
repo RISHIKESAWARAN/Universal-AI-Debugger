@@ -8,9 +8,8 @@ from openai import OpenAI
 app = FastAPI()
 
 # --- SCALER PROXY & ENVIRONMENT SETUP ---
-# Scaler inject panra variables, illana default-ah dummy vachukkurom crash aagama irukka
-API_BASE = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
-API_KEY = os.getenv("API_KEY", "dummy_key") 
+API_BASE = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+API_KEY = os.getenv("API_KEY", os.getenv("HF_TOKEN", "dummy_key"))
 MODEL_NAME = os.getenv("MODEL_NAME", "meta-llama/Meta-Llama-3-8B-Instruct")
 
 # OpenAI Client point to Scaler Proxy
