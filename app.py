@@ -79,3 +79,9 @@ async def post_debug(request: Request):
         # Error case-layum score 0.1 (not 0.0)
         print("[END] task=syntax_validation score=0.1 steps=1", flush=True)
         return {"message": f"Server Error: {str(e)}"}
+
+def main():
+    uvicorn.run(app, host="0.0.0.0", port=7860)
+
+if __name__ == "__main__":
+    main()
