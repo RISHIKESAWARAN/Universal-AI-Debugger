@@ -7,8 +7,8 @@ def run_inference(user_code):
     print(f"[START] task=debugging", flush=True)
     
     # Proxy Setup
-    API_BASE = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
-    API_KEY = os.getenv("API_KEY", "dummy_key")
+    API_BASE = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+    API_KEY = os.getenv("API_KEY", os.getenv("HF_TOKEN", "dummy_key"))
     MODEL_NAME = os.getenv("MODEL_NAME", "meta-llama/Meta-Llama-3-8B-Instruct")
 
     client = OpenAI(base_url=API_BASE, api_key=API_KEY)
