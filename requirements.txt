@@ -1,5 +1,4 @@
 fastapi
 uvicorn
-huggingface-hub
-python-multipart
-httpx
+openai
+python-dotenv
